@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Har bir telefon raqamning ma'lumoti faqat o'sha raqam egasiga (SMS kod bilan tasdiqlangan)
+    match /users/{phone} {
+      allow read, write: if request.auth != null
+        && request.auth.token.phone_number == '+' + phone;
+    }
+  }
+}
